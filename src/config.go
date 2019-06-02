@@ -6,9 +6,10 @@ import (
 	"os"
 )
 
-// MessageConfig is a json file that put all custom messages
+// MessageConfig is a json file that put all custom messages.
 type MessageConfig struct {
-	Welcome []*quickReply `json:"welcome"`
+	Welcome       []*quickReply `json:"welcome"`
+	HandsomePhoto []string      `json:"handsome_photo"`
 }
 
 type quickReply struct {
@@ -17,7 +18,7 @@ type quickReply struct {
 	Text     string `json:"text"`
 }
 
-// InitMessage init the all custom message by message.json
+// InitMessage init the all custom message by message.json.
 func InitMessage() (*MessageConfig, error) {
 	messageFile, err := os.Open(string(messagePath))
 	if err != nil {

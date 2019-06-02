@@ -4,6 +4,21 @@
       "image_url": "https://www.flaticon.com/premium-icon/icons/svg/748/748168.svg",
       "label":"Hello",
       "text":"Hello"
+    },
+    {
+      "image_url": "https://i.imgur.com/NdiwSuO.jpg",
+      "label": "Handsome photo",
+      "text": "HP"
+    },
+    {
+      "image_url": "https://www.flaticon.com/premium-icon/icons/svg/615/615166.svg",
+      "label": "Help",
+      "text": "help"
     }
+  ],
+  "handsome_photo": [
+    "https://i.imgur.com/TgLOdzn.jpg",
+    "https://i.imgur.com/d9vR4Ba.jpg",
+    "https://i.imgur.com/lN502aE.jpg"
   ]
 }

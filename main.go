@@ -27,24 +27,15 @@ func main() {
 		events, err := bot.ParseRequest(req)
 		if err != nil {
 			if err == linebot.ErrInvalidSignature {
-				w.WriteHeader(400)
+				w.WriteHeader(http.StatusBadGateway)
 			} else {
-				w.WriteHeader(500)
+				w.WriteHeader(http.StatusInternalServerError)
 			}
 			return
 		}
 		for _, event := range events {
-			if event.Type == linebot.EventTypeMessage {
-				switch event.Message.(type) {
-				case *linebot.TextMessage:
-					if _, err = bot.ReplyMessage(event.ReplyToken, src.WelcomeMessage(mConfig)).Do(); err != nil {
-						log.Print(err)
-					}
-				}
-			} else if event.Type == linebot.EventTypeJoin {
-				if _, err = bot.ReplyMessage(event.ReplyToken, src.WelcomeMessage(mConfig)).Do(); err != nil {
-					log.Print(err)
-				}
+			if err := src.HandleEvent(bot, event, mConfig); err != nil {
+				log.Println(err)
 			}
 		}
 	})
