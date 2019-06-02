@@ -30,7 +30,7 @@ func handleTextMessage(mConfig *MessageConfig, text string) linebot.SendingMessa
 	case handsomePhoto:
 		return randHandsomePhoto(mConfig)
 	case help:
-		return messageWithQuickReply(string(help), mConfig)
+		return messageWithQuickReply(string(helpReply), mConfig)
 	case project:
 		return projectCarousel(mConfig)
 	default:
@@ -56,7 +56,7 @@ func projectCarousel(msg *MessageConfig) linebot.SendingMessage {
 
 	carTemplate := linebot.NewCarouselTemplate(columns...)
 
-	return linebot.NewTemplateMessage("", carTemplate)
+	return linebot.NewTemplateMessage(projectAltText, carTemplate)
 }
 
 func messageWithQuickReply(msg string, mConfig *MessageConfig) linebot.SendingMessage {
