@@ -19,6 +19,43 @@
   "handsome_photo": [
     "https://i.imgur.com/TgLOdzn.jpg",
     "https://i.imgur.com/d9vR4Ba.jpg",
-    "https://i.imgur.com/lN502aE.jpg"
+    "https://i.imgur.com/lN502aE.jpg",
+    "https://i.imgur.com/kWcU8dR.jpg",
+    "https://i.imgur.com/tuKGMOz.jpg"
+  ],
+  "project_carousel": [
+    {
+      "thumbnailImageUrl": "https://i.imgur.com/J2s43QG.png",
+      "title": "GeometrA",
+      "text": "It's an open source Android app's automation testing tool.",
+      "actions": [
+        {
+          "label": "more detail",
+          "uri": "https://github.com/NTUTVisualScript/GeometrA"
+        }
+      ]
+    },
+    {
+      "thumbnailImageUrl": "http://img.51miz.com/Element/00/23/39/80/daf80c4e_E233980_05b78760.png!/quality/90/unsharp/true/compress/true/format/png",
+      "title": "InternetBookstore",
+      "text": "It's a simple web bookstore.",
+      "actions": [
+        {
+          "label": "more detail",
+          "uri": "https://github.com/InternetBookstore/InternetBookstore"
+        }
+      ]
+    },
+    {
+      "thumbnailImageUrl": "https://camo.githubusercontent.com/a851c20ee0327c686cc2e3b5ef1c3b4b0f7f5757/68747470733a2f2f692e696d6775722e636f6d2f526f755830626b2e706e67",
+      "title": "Little Fighter One-Piece",
+      "text": "It's an android little-fighter game.",
+      "actions": [
+        {
+          "label": "mroe detail",
+          "uri": "https://github.com/TsaiWenXue/Little-Fighter-One-Piece"
+        }
+      ]
+    }
   ]
 }

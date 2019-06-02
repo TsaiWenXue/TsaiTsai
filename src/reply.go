@@ -17,7 +17,7 @@ func HandleEvent(bot *linebot.Client, event *linebot.Event, mConfig *MessageConf
 			}
 		}
 	case linebot.EventTypeJoin:
-		if _, err := bot.ReplyMessage(event.ReplyToken, welcomeMessage(mConfig)).Do(); err != nil {
+		if _, err := bot.ReplyMessage(event.ReplyToken, messageWithQuickReply(welcome, mConfig)).Do(); err != nil {
 			return err
 		}
 	}
@@ -26,13 +26,15 @@ func HandleEvent(bot *linebot.Client, event *linebot.Event, mConfig *MessageConf
 }
 
 func handleTextMessage(mConfig *MessageConfig, text string) linebot.SendingMessage {
-	switch text {
-	case string(handsomePhoto):
+	switch specialWord(text) {
+	case handsomePhoto:
 		return randHandsomePhoto(mConfig)
-	case string(help):
-		return linebot.NewTextMessage(string(helpReply))
+	case help:
+		return messageWithQuickReply(string(help), mConfig)
+	case project:
+		return projectCarousel(mConfig)
 	default:
-		return linebot.NewTextMessage(string(defaultReply))
+		return messageWithQuickReply(defaultReply, mConfig)
 	}
 }
 
@@ -43,10 +45,24 @@ func randHandsomePhoto(msg *MessageConfig) linebot.SendingMessage {
 	return linebot.NewImageMessage(url, url)
 }
 
-func welcomeMessage(msg *MessageConfig) linebot.SendingMessage {
+func projectCarousel(msg *MessageConfig) linebot.SendingMessage {
+	columns := []*linebot.CarouselColumn{}
+
+	for _, c := range msg.ProjectCarousel {
+		act := linebot.NewURIAction(c.Actions[0].Label, c.Actions[0].URI)
+		column := linebot.NewCarouselColumn(c.ThumbnailImageURL, c.Title, c.Text, act)
+		columns = append(columns, column)
+	}
+
+	carTemplate := linebot.NewCarouselTemplate(columns...)
+
+	return linebot.NewTemplateMessage("", carTemplate)
+}
+
+func messageWithQuickReply(msg string, mConfig *MessageConfig) linebot.SendingMessage {
 	items := []*linebot.QuickReplyButton{}
 
-	for _, q := range msg.Welcome {
+	for _, q := range mConfig.Welcome {
 		ma := linebot.NewMessageAction(q.Label, q.Text)
 		qrb := linebot.NewQuickReplyButton(q.ImageURL, ma)
 		items = append(items, qrb)
@@ -54,5 +70,5 @@ func welcomeMessage(msg *MessageConfig) linebot.SendingMessage {
 
 	quickReply := &linebot.QuickReplyItems{Items: items}
 
-	return linebot.NewTextMessage(string(welcome)).WithQuickReplies(quickReply)
+	return linebot.NewTextMessage(msg).WithQuickReplies(quickReply)
 }

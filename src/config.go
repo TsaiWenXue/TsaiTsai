@@ -8,14 +8,27 @@ import (
 
 // MessageConfig is a json file that put all custom messages.
 type MessageConfig struct {
-	Welcome       []*quickReply `json:"welcome"`
-	HandsomePhoto []string      `json:"handsome_photo"`
+	Welcome         []*quickReply              `json:"welcome"`
+	HandsomePhoto   []string                   `json:"handsome_photo"`
+	ProjectCarousel []*projectCarouselTemplate `json:"project_carousel"`
 }
 
 type quickReply struct {
 	ImageURL string `json:"image_url"`
 	Label    string `json:"label"`
 	Text     string `json:"text"`
+}
+
+type projectCarouselTemplate struct {
+	ThumbnailImageURL    string       `json:"thumbnailImageUrl,omitempty"`
+	Title                string       `json:"title,omitempty"`
+	Text                 string       `json:"text"`
+	Actions              []*uriAction `json:"actions"`
+}
+
+type uriAction struct {
+	URI   string `json:"uri"`
+	Label string `json:"label"`
 }
 
 // InitMessage init the all custom message by message.json.
