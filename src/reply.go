@@ -2,6 +2,7 @@ package src
 
 import (
 	"math/rand"
+	"strings"
 
 	"github.com/line/line-bot-sdk-go/linebot"
 )
@@ -26,13 +27,17 @@ func HandleEvent(bot *linebot.Client, event *linebot.Event, mConfig *MessageConf
 }
 
 func handleTextMessage(mConfig *MessageConfig, text string) linebot.SendingMessage {
-	switch specialWord(text) {
+	switch specialWord(strings.ToLower(text)) {
 	case handsomePhoto:
 		return randHandsomePhoto(mConfig)
 	case help:
 		return messageWithQuickReply(string(helpReply), mConfig)
 	case project:
 		return projectCarousel(mConfig)
+	case hello, hi:
+		pkgID := stickersPackageMap[rand.Intn(len(stickersPackageMap))]
+		stickerID := stickersMap[pkgID][rand.Intn(len(stickersMap[pkgID]))]
+		return linebot.NewStickerMessage(pkgID, stickerID)
 	default:
 		return messageWithQuickReply(defaultReply, mConfig)
 	}
