@@ -5,10 +5,16 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/TsaiWenXue/TsaiTsai/src"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 func main() {
+	mConfig, err := src.InitMessage()
+	if err != nil {
+		panic(err)
+	}
+
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"))
@@ -29,17 +35,20 @@ func main() {
 		}
 		for _, event := range events {
 			if event.Type == linebot.EventTypeMessage {
-				switch message := event.Message.(type) {
+				switch event.Message.(type) {
 				case *linebot.TextMessage:
-					if _, err = bot.ReplyMessage(event.ReplyToken, linebot.NewTextMessage(message.Text)).Do(); err != nil {
+					if _, err = bot.ReplyMessage(event.ReplyToken, src.WelcomeMessage(mConfig)).Do(); err != nil {
 						log.Print(err)
 					}
+				}
+			} else if event.Type == linebot.EventTypeJoin {
+				if _, err = bot.ReplyMessage(event.ReplyToken, src.WelcomeMessage(mConfig)).Do(); err != nil {
+					log.Print(err)
 				}
 			}
 		}
 	})
-	// This is just sample code.
-	// For actual use, you must support HTTPS by using `ListenAndServeTLS`, a reverse proxy or something else.
+
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
