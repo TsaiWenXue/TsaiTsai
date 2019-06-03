@@ -37,20 +37,27 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 }
 
 func newBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
-	header := &linebot.BoxComponent{
-		Type:   linebot.FlexComponentTypeBox,
-		Layout: linebot.FlexBoxLayoutTypeVertical,
-		Contents: []linebot.FlexComponent{
-			&linebot.TextComponent{
-				Type:   linebot.FlexComponentTypeText,
-				Text:   n.area,
-				Size:   linebot.FlexTextSizeTypeXl,
-				Align:  linebot.FlexComponentAlignTypeCenter,
-				Weight: linebot.FlexTextWeightTypeBold,
-				Color:  white,
-			},
-		},
+	htextCon := &linebot.TextComponent{
+		Type:   linebot.FlexComponentTypeText,
+		Text:   n.area,
+		Size:   linebot.FlexTextSizeTypeXl,
+		Align:  linebot.FlexComponentAlignTypeCenter,
+		Weight: linebot.FlexTextWeightTypeBold,
+		Color:  white,
 	}
+	if n.areaLink != "" {
+		htextCon.Action = &linebot.URIAction{
+			Label: n.area,
+			URI:   n.areaLink,
+		}
+	}
+
+	header := &linebot.BoxComponent{
+		Type:     linebot.FlexComponentTypeBox,
+		Layout:   linebot.FlexBoxLayoutTypeVertical,
+		Contents: []linebot.FlexComponent{htextCon},
+	}
+
 	hero := &linebot.ImageComponent{
 		Type:        linebot.FlexComponentTypeImage,
 		Size:        linebot.FlexImageSizeTypeFull,
@@ -73,6 +80,7 @@ func newBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
 		Header: &linebot.BlockStyle{BackgroundColor: black},
 		Footer: &linebot.BlockStyle{BackgroundColor: white},
 	}
+
 	return &linebot.BubbleContainer{
 		Type:      linebot.FlexContainerTypeBubble,
 		Direction: linebot.FlexBubbleDirectionTypeLTR,

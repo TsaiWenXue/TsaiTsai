@@ -20,6 +20,7 @@ type NewsScheduler struct {
 
 type cnnNews struct {
 	area      string
+	areaLink  string
 	imagePath string
 	title     []string
 	link      []string
@@ -81,8 +82,8 @@ func (ns *NewsScheduler) RefreshNews() {
 
 func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	var (
-		image, area          string
-		class, titles, links []string
+		image, area, areaLink string
+		class, titles, links  []string
 	)
 	re := regexp.MustCompile(`(?P<one>src=")(?P<two>.*)(?P<three>")`)
 	imgText := h.ChildText("a noscript")
@@ -92,6 +93,11 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	}
 
 	area = h.ChildText("a h2")
+	areaLink = h.ChildAttr("a", "href")
+	if areaLink != "" && len(areaLink) < len(cnnDomain) {
+		areaLink = cnnDomain + areaLink
+	}
+
 	class = h.ChildAttrs("li article", "class")
 	for _, c := range class {
 		c = strings.Replace(c, " ", ".", -1)
@@ -107,6 +113,7 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	if len(links) == len(titles) {
 		ns.AddToQueue(&cnnNews{
 			area:      area,
+			areaLink:  areaLink,
 			title:     titles,
 			link:      links,
 			imagePath: image,
