@@ -97,7 +97,7 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	imgText := h.ChildText("a noscript")
 	matchStrings := re.FindStringSubmatch(imgText)
 	if len(matchStrings) >= 3 {
-		image = matchStrings[2]
+		image = https + matchStrings[2]
 	}
 
 	area = h.ChildText("a h2")
@@ -113,7 +113,7 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 				area:       area,
 				title:      title,
 				link:       cnnDomain + link,
-				imagePath:  https + image,
+				imagePath:  image,
 				effectTime: time.Now().UTC(),
 			})
 		}
