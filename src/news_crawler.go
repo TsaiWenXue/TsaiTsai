@@ -19,11 +19,10 @@ type NewsScheduler struct {
 }
 
 type cnnNews struct {
-	area       string
-	imagePath  string
-	title      []string
-	link       []string
-	effectTime time.Time
+	area      string
+	imagePath string
+	title     []string
+	link      []string
 }
 
 // InitNewsScheduler init NewsScheduler
@@ -101,7 +100,7 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 
 		if link != "" && title != "" {
 			titles = append(titles, title)
-			links = append(links, link)
+			links = append(links, cnnDomain+link)
 		}
 	}
 
