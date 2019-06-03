@@ -18,35 +18,25 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 			if now.Sub(n.effectTime) > time.Duration(mc.News.EffectTime)*time.Hour {
 				delete(m, k)
 			}
-			if n.imagePath != "" {
-				bubCont.Hero = &linebot.ImageComponent{
-					Type:        linebot.FlexComponentTypeImage,
-					URL:         n.imagePath,
-					Size:        linebot.FlexImageSizeTypeFull,
-					AspectRatio: linebot.FlexImageAspectRatioType20to13,
-					AspectMode:  linebot.FlexImageAspectModeTypeFit,
-					Action: &linebot.URIAction{
-						Label: n.id,
-						URI:   n.link,
-					},
-				}
-			} else {
-				bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.TextComponent{
-					Type:   linebot.FlexComponentTypeText,
-					Text:   n.title,
-					Size:   linebot.FlexTextSizeTypeLg,
-					Weight: linebot.FlexTextWeightTypeBold,
-					Action: &linebot.URIAction{
-						Label: n.id,
-						URI:   n.link,
-					},
-				})
-				bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.SeparatorComponent{
-					Type:   linebot.FlexComponentTypeSeparator,
-					Margin: linebot.FlexComponentMarginTypeXs,
-					Color:  gray,
-				})
+			if bubCont.Hero.URL == "" {
+				bubCont.Hero.URL = n.imagePath
 			}
+
+			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.TextComponent{
+				Type:   linebot.FlexComponentTypeText,
+				Text:   n.title,
+				Size:   linebot.FlexTextSizeTypeLg,
+				Weight: linebot.FlexTextWeightTypeBold,
+				Action: &linebot.URIAction{
+					Label: n.id,
+					URI:   n.link,
+				},
+			})
+			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.SeparatorComponent{
+				Type:   linebot.FlexComponentTypeSeparator,
+				Margin: linebot.FlexComponentMarginTypeXs,
+				Color:  gray,
+			})
 
 		}
 		carCont.Contents = append(carCont.Contents, bubCont)
@@ -70,6 +60,12 @@ func newBubbleContainer(area string) *linebot.BubbleContainer {
 			},
 		},
 	}
+	hero := &linebot.ImageComponent{
+		Type:        linebot.FlexComponentTypeImage,
+		Size:        linebot.FlexImageSizeTypeFull,
+		AspectRatio: linebot.FlexImageAspectRatioType20to13,
+		AspectMode:  linebot.FlexImageAspectModeTypeFit,
+	}
 	body := &linebot.BoxComponent{
 		Type:   linebot.FlexComponentTypeBox,
 		Layout: linebot.FlexBoxLayoutTypeVertical,
@@ -89,6 +85,7 @@ func newBubbleContainer(area string) *linebot.BubbleContainer {
 		Type:      linebot.FlexContainerTypeBubble,
 		Direction: linebot.FlexBubbleDirectionTypeLTR,
 		Header:    header,
+		Hero:      hero,
 		Body:      body,
 		Footer:    footer,
 		Styles:    style,
