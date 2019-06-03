@@ -42,7 +42,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 					},
 				})
 				bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.SeparatorComponent{
-					Type:   linebot.SeparatorComponent,
+					Type:   linebot.FlexComponentTypeSeparator,
 					Margin: linebot.FlexComponentMarginTypeXs,
 					Color:  gray,
 				})
