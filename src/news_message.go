@@ -25,7 +25,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
 				Text:   n.title,
-				Size:   linebot.FlexTextSizeTypeLg,
+				Size:   linebot.FlexTextSizeTypeSm,
 				Weight: linebot.FlexTextWeightTypeBold,
 				Action: &linebot.URIAction{
 					Label: n.id,
@@ -34,7 +34,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 			})
 			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.SeparatorComponent{
 				Type:   linebot.FlexComponentTypeSeparator,
-				Margin: linebot.FlexComponentMarginTypeXs,
+				Margin: linebot.FlexComponentMarginTypeSm,
 				Color:  gray,
 			})
 
@@ -78,8 +78,8 @@ func newBubbleContainer(area string) *linebot.BubbleContainer {
 		},
 	}
 	style := &linebot.BubbleStyle{
-		Header: &linebot.BlockStyle{BackgroundColor: white},
-		Footer: &linebot.BlockStyle{BackgroundColor: black},
+		Header: &linebot.BlockStyle{BackgroundColor: black},
+		Footer: &linebot.BlockStyle{BackgroundColor: white},
 	}
 	return &linebot.BubbleContainer{
 		Type:      linebot.FlexContainerTypeBubble,
