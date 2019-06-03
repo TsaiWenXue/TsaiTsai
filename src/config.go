@@ -11,6 +11,7 @@ type MessageConfig struct {
 	Welcome         []*quickReply              `json:"welcome"`
 	HandsomePhoto   []string                   `json:"handsome_photo"`
 	ProjectCarousel []*projectCarouselTemplate `json:"project_carousel"`
+	News            *newsConfig                `json:"news"`
 }
 
 type quickReply struct {
@@ -20,10 +21,10 @@ type quickReply struct {
 }
 
 type projectCarouselTemplate struct {
-	ThumbnailImageURL    string       `json:"thumbnailImageUrl,omitempty"`
-	Title                string       `json:"title,omitempty"`
-	Text                 string       `json:"text"`
-	Actions              []*uriAction `json:"actions"`
+	ThumbnailImageURL string       `json:"thumbnailImageUrl,omitempty"`
+	Title             string       `json:"title,omitempty"`
+	Text              string       `json:"text"`
+	Actions           []*uriAction `json:"actions"`
 }
 
 type uriAction struct {
@@ -31,8 +32,14 @@ type uriAction struct {
 	Label string `json:"label"`
 }
 
-// InitMessage init the all custom message by message.json.
-func InitMessage() (*MessageConfig, error) {
+type newsConfig struct {
+	RefreshPeriod int `json:"refresh_period"`
+	ChanBuffer    int `json:"chan_buffer"`
+	EffectTime    int `json:"effect_time"`
+}
+
+// InitMessageConfig init the all custom message by message.json.
+func InitMessageConfig() (*MessageConfig, error) {
 	messageFile, err := os.Open(string(messagePath))
 	if err != nil {
 		return nil, err

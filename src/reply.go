@@ -7,18 +7,23 @@ import (
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
+var (
+	// Scheduler is the news scheduler
+	Scheduler *NewsScheduler
+)
+
 // HandleEvent deal with event sent from users.
-func HandleEvent(bot *linebot.Client, event *linebot.Event, mConfig *MessageConfig) error {
+func HandleEvent(bot *linebot.Client, event *linebot.Event, mc *MessageConfig) error {
 	switch event.Type {
 	case linebot.EventTypeMessage:
 		switch message := event.Message.(type) {
 		case *linebot.TextMessage:
-			if _, err := bot.ReplyMessage(event.ReplyToken, handleTextMessage(mConfig, message.Text)).Do(); err != nil {
+			if _, err := bot.ReplyMessage(event.ReplyToken, handleTextMessage(mc, message.Text)).Do(); err != nil {
 				return err
 			}
 		}
 	case linebot.EventTypeJoin:
-		if _, err := bot.ReplyMessage(event.ReplyToken, messageWithQuickReply(welcome, mConfig)).Do(); err != nil {
+		if _, err := bot.ReplyMessage(event.ReplyToken, messageWithQuickReply(welcome, mc)).Do(); err != nil {
 			return err
 		}
 	}
@@ -26,20 +31,22 @@ func HandleEvent(bot *linebot.Client, event *linebot.Event, mConfig *MessageConf
 	return nil
 }
 
-func handleTextMessage(mConfig *MessageConfig, text string) linebot.SendingMessage {
+func handleTextMessage(mc *MessageConfig, text string) linebot.SendingMessage {
 	switch specialWord(strings.ToLower(text)) {
 	case handsomePhoto:
-		return randHandsomePhoto(mConfig)
+		return randHandsomePhoto(mc)
 	case help:
-		return messageWithQuickReply(string(helpReply), mConfig)
+		return messageWithQuickReply(string(helpReply), mc)
 	case project:
-		return projectCarousel(mConfig)
+		return projectCarousel(mc)
 	case hello, hi:
 		pkgID := stickersPackageMap[rand.Intn(len(stickersPackageMap))]
 		stickerID := stickersMap[pkgID][rand.Intn(len(stickersMap[pkgID]))]
 		return linebot.NewStickerMessage(pkgID, stickerID)
+	case "news":
+		return newsTemplateMessage(mc)
 	default:
-		return messageWithQuickReply(defaultReply, mConfig)
+		return messageWithQuickReply(defaultReply, mc)
 	}
 }
 
@@ -64,10 +71,10 @@ func projectCarousel(msg *MessageConfig) linebot.SendingMessage {
 	return linebot.NewTemplateMessage(projectAltText, carTemplate)
 }
 
-func messageWithQuickReply(msg string, mConfig *MessageConfig) linebot.SendingMessage {
+func messageWithQuickReply(msg string, mc *MessageConfig) linebot.SendingMessage {
 	items := []*linebot.QuickReplyButton{}
 
-	for _, q := range mConfig.Welcome {
+	for _, q := range mc.Welcome {
 		ma := linebot.NewMessageAction(q.Label, q.Text)
 		qrb := linebot.NewQuickReplyButton(q.ImageURL, ma)
 		items = append(items, qrb)

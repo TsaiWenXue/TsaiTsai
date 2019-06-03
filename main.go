@@ -10,11 +10,19 @@ import (
 )
 
 func main() {
-	mConfig, err := src.InitMessage()
+	// Init config
+	mc, err := src.InitMessageConfig()
 	if err != nil {
 		panic(err)
 	}
 
+	// Init news scheduler
+	src.Scheduler = src.InitNewsScheduler(mc)
+	go src.Scheduler.PopNewsChan()
+	go src.Scheduler.PopTicker()
+	src.Scheduler.RefreshNews()
+
+	// Init line bot
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
 		os.Getenv("CHANNEL_TOKEN"))
@@ -34,7 +42,7 @@ func main() {
 			return
 		}
 		for _, event := range events {
-			if err := src.HandleEvent(bot, event, mConfig); err != nil {
+			if err := src.HandleEvent(bot, event, mc); err != nil {
 				log.Println(err)
 			}
 		}
