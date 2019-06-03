@@ -43,7 +43,7 @@ func handleTextMessage(mc *MessageConfig, text string) linebot.SendingMessage {
 		pkgID := stickersPackageMap[rand.Intn(len(stickersPackageMap))]
 		stickerID := stickersMap[pkgID][rand.Intn(len(stickersMap[pkgID]))]
 		return linebot.NewStickerMessage(pkgID, stickerID)
-	case "news":
+	case news:
 		return newsTemplateMessage(mc)
 	default:
 		return messageWithQuickReply(defaultReply, mc)

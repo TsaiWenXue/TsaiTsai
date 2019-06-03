@@ -64,7 +64,6 @@ func (ns *NewsScheduler) updateNewsMap(n *cnnNews) error {
 	}
 	ns.newsMap[n.area][n.id] = n
 
-	log.Println(ns.newsMap)
 	return nil
 }
 
@@ -80,7 +79,7 @@ func (ns *NewsScheduler) RefreshNews() {
 	c := colly.NewCollector()
 
 	c.OnHTML("#world-zone-2 .zn__containers", func(e *colly.HTMLElement) {
-		e.ForEach("div ul li article", ns.newCNNNews)
+		e.ForEach("div ul", ns.newCNNNews)
 	})
 	c.OnRequest(func(r *colly.Request) {
 		log.Println("Visiting", r.URL.String())
@@ -91,7 +90,8 @@ func (ns *NewsScheduler) RefreshNews() {
 
 func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	var (
-		image, title, link, area string
+		image, area, title, link string
+		class                    []string
 	)
 	re := regexp.MustCompile(`(?P<one>src=")(?P<two>.*)(?P<three>")`)
 	imgText := h.ChildText("a noscript")
@@ -99,21 +99,23 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	if len(matchStrings) >= 3 {
 		image = matchStrings[2]
 	}
-	// link=/2019/06/01/asia/bts-kpop-us-intl/index.html
-	link = h.ChildAttr("a", "href")
-	title = h.ChildText("h3")
 
-	if len(link) > 0 {
-		tmpArea := link[12:]
-		area = tmpArea[:strings.Index(tmpArea, "/")]
+	area = h.ChildText("a h2")
+	class = h.ChildAttrs("li article", "class")
+	for j, c := range class {
+		c = strings.Replace(c, " ", ".", -1)
+		title = h.ChildText("." + c + " h3")
+		link = h.ChildAttr("."+c+" h3 a", "href")
+
+		if link != "" && title != "" {
+			ns.AddToQueue(&cnnNews{
+				id:         fmt.Sprintf("%s-%d", area, j),
+				area:       area,
+				title:      title,
+				link:       cnnDomain + link,
+				imagePath:  https + image,
+				effectTime: time.Now().UTC(),
+			})
+		}
 	}
-
-	ns.AddToQueue(&cnnNews{
-		id:         fmt.Sprintf("%s-%d", area, i),
-		area:       strings.ToUpper(string(area[0])) + area[1:],
-		title:      title,
-		link:       cnnDomain + link,
-		imagePath:  https + image,
-		effectTime: time.Now().UTC(),
-	})
 }

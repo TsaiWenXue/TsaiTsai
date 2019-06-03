@@ -26,7 +26,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 					AspectRatio: linebot.FlexImageAspectRatioType20to13,
 					AspectMode:  linebot.FlexImageAspectModeTypeFit,
 					Action: &linebot.URIAction{
-						Label: n.title,
+						Label: n.id,
 						URI:   n.link,
 					},
 				}
@@ -37,7 +37,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 					Size:   linebot.FlexTextSizeTypeLg,
 					Weight: linebot.FlexTextWeightTypeBold,
 					Action: &linebot.URIAction{
-						Label: n.area,
+						Label: n.id,
 						URI:   n.link,
 					},
 				})

@@ -30,6 +30,7 @@ const (
 	handsomePhoto specialWord = "hp"
 	help          specialWord = "help"
 	project       specialWord = "project"
+	news          specialWord = "news"
 )
 
 const (
