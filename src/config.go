@@ -35,7 +35,6 @@ type uriAction struct {
 type newsConfig struct {
 	RefreshPeriod int `json:"refresh_period"`
 	ChanBuffer    int `json:"chan_buffer"`
-	EffectTime    int `json:"effect_time"`
 }
 
 // InitMessageConfig init the all custom message by message.json.

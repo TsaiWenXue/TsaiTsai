@@ -1,7 +1,6 @@
 package src
 
 import (
-	"fmt"
 	"log"
 	"regexp"
 	"strings"
@@ -14,17 +13,16 @@ import (
 // NewsScheduler used to timely refresh news
 type NewsScheduler struct {
 	mu         *sync.Mutex
-	newsMap    map[string]map[string]*cnnNews
+	newsMap    map[string]*cnnNews
 	newsChan   chan *cnnNews
 	timeTicker *time.Ticker
 }
 
 type cnnNews struct {
-	id         string
 	area       string
 	imagePath  string
-	title      string
-	link       string
+	title      []string
+	link       []string
 	effectTime time.Time
 }
 
@@ -32,7 +30,7 @@ type cnnNews struct {
 func InitNewsScheduler(mc *MessageConfig) *NewsScheduler {
 	return &NewsScheduler{
 		mu:         &sync.Mutex{},
-		newsMap:    map[string]map[string]*cnnNews{},
+		newsMap:    map[string]*cnnNews{},
 		newsChan:   make(chan *cnnNews, mc.News.ChanBuffer),
 		timeTicker: time.NewTicker(time.Duration(mc.News.RefreshPeriod) * time.Minute),
 	}
@@ -46,25 +44,19 @@ func (ns *NewsScheduler) AddToQueue(n *cnnNews) {
 // PopNewsChan call updateNews when news is in the newsChan.
 func (ns *NewsScheduler) PopNewsChan() {
 	for n := range ns.newsChan {
-		if err := ns.updateNewsMap(n); err != nil {
-			log.Println(err)
-		}
+		ns.updateNewsMap(n)
 	}
 }
 
-func (ns *NewsScheduler) updateNewsMap(n *cnnNews) error {
+func (ns *NewsScheduler) updateNewsMap(n *cnnNews) {
 	ns.mu.Lock()
 	defer ns.mu.Unlock()
-	if n.title == "" || n.area == "" || n.link == "" {
-		return fmt.Errorf("cnnNews field empty")
-	}
 
 	if _, ok := ns.newsMap[n.area]; !ok {
-		ns.newsMap[n.area] = map[string]*cnnNews{n.id: n}
+		ns.newsMap[n.area] = n
 	}
-	ns.newsMap[n.area][n.id] = n
 
-	return nil
+	ns.newsMap[n.area] = n
 }
 
 // PopTicker call RefreshNews a period of time.
@@ -90,8 +82,8 @@ func (ns *NewsScheduler) RefreshNews() {
 
 func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 	var (
-		image, area, title, link string
-		class                    []string
+		image, area          string
+		class, titles, links []string
 	)
 	re := regexp.MustCompile(`(?P<one>src=")(?P<two>.*)(?P<three>")`)
 	imgText := h.ChildText("a noscript")
@@ -102,20 +94,23 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 
 	area = h.ChildText("a h2")
 	class = h.ChildAttrs("li article", "class")
-	for j, c := range class {
+	for _, c := range class {
 		c = strings.Replace(c, " ", ".", -1)
-		title = h.ChildText("." + c + " h3")
-		link = h.ChildAttr("."+c+" h3 a", "href")
+		title := h.ChildText("." + c + " h3")
+		link := h.ChildAttr("."+c+" h3 a", "href")
 
 		if link != "" && title != "" {
-			ns.AddToQueue(&cnnNews{
-				id:         fmt.Sprintf("%s-%d", area, j),
-				area:       area,
-				title:      title,
-				link:       cnnDomain + link,
-				imagePath:  image,
-				effectTime: time.Now().UTC(),
-			})
+			titles = append(titles, title)
+			links = append(links, link)
 		}
+	}
+
+	if len(links) == len(titles) {
+		ns.AddToQueue(&cnnNews{
+			area:      area,
+			title:     titles,
+			link:      links,
+			imagePath: image,
+		})
 	}
 }

@@ -65,7 +65,6 @@
   ],
   "news": {
     "refresh_period":5,
-    "chan_buffer": 500,
-    "effect_time": 12
+    "chan_buffer": 500
   }
 }

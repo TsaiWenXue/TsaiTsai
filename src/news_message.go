@@ -1,37 +1,28 @@
 package src
 
 import (
-	"time"
-
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 	Scheduler.mu.Lock()
 	defer Scheduler.mu.Unlock()
-	now := time.Now().UTC()
-	carCont := &linebot.CarouselContainer{Type: linebot.FlexContainerTypeCarousel}
-	for area, m := range Scheduler.newsMap {
-		bubCont := newBubbleContainer(area)
-		for k, n := range m {
-			// if a news exists too long, delete it
-			if now.Sub(n.effectTime) > time.Duration(mc.News.EffectTime)*time.Hour {
-				delete(m, k)
-			}
-			if bubCont.Hero.URL == "" {
-				bubCont.Hero.URL = n.imagePath
-			}
 
+	carCont := &linebot.CarouselContainer{Type: linebot.FlexContainerTypeCarousel}
+	for _, n := range Scheduler.newsMap {
+		bubCont := newBubbleContainer(n)
+		for i := 0; i < len(n.title); i++ {
 			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
-				Text:   n.title,
+				Text:   n.title[i],
 				Size:   linebot.FlexTextSizeTypeSm,
 				Weight: linebot.FlexTextWeightTypeBold,
 				Action: &linebot.URIAction{
-					Label: n.id,
-					URI:   n.link,
+					Label: n.area,
+					URI:   n.link[i],
 				},
 			})
+
 			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.SeparatorComponent{
 				Type:   linebot.FlexComponentTypeSeparator,
 				Margin: linebot.FlexComponentMarginTypeSm,
@@ -45,14 +36,14 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 	return linebot.NewFlexMessage(newsAltText, carCont)
 }
 
-func newBubbleContainer(area string) *linebot.BubbleContainer {
+func newBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
 	header := &linebot.BoxComponent{
 		Type:   linebot.FlexComponentTypeBox,
 		Layout: linebot.FlexBoxLayoutTypeVertical,
 		Contents: []linebot.FlexComponent{
 			&linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
-				Text:   area,
+				Text:   n.area,
 				Size:   linebot.FlexTextSizeTypeXl,
 				Align:  linebot.FlexComponentAlignTypeCenter,
 				Weight: linebot.FlexTextWeightTypeBold,
@@ -65,6 +56,7 @@ func newBubbleContainer(area string) *linebot.BubbleContainer {
 		Size:        linebot.FlexImageSizeTypeFull,
 		AspectRatio: linebot.FlexImageAspectRatioType20to13,
 		AspectMode:  linebot.FlexImageAspectModeTypeFit,
+		URL:         n.imagePath,
 	}
 	body := &linebot.BoxComponent{
 		Type:   linebot.FlexComponentTypeBox,
