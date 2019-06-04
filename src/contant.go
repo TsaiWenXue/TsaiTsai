@@ -16,7 +16,7 @@ const (
 const (
 	welcome      = "Hello~ I'm TsaiTsai. Let me introduce you my best friend, Denny Tsai! Please tap the following button to see more."
 	defaultReply = "Sorry~ I can't understand what you are saying. Please type `help` for more infomation."
-	helpReply    = "`HP` -> handsome photo\n`Project` -> Projects that Denny used to do"
+	helpReply    = "`Hello` -> Say hello to me\n`HP` -> handsome photo\n`Project` -> Projects that Denny used to do"
 
 	projectAltText = "Projects that Denny used to do"
 	newsAltText    = "Worlds news"

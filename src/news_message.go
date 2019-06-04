@@ -10,7 +10,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 
 	carCont := &linebot.CarouselContainer{Type: linebot.FlexContainerTypeCarousel}
 	for _, n := range Scheduler.newsMap {
-		bubCont := newBubbleContainer(n)
+		bubCont := newsBubbleContainer(n)
 		for i := 0; i < len(n.title); i++ {
 			bubCont.Body.Contents = append(bubCont.Body.Contents, &linebot.TextComponent{
 				Type:   linebot.FlexComponentTypeText,
@@ -36,7 +36,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 	return linebot.NewFlexMessage(newsAltText, carCont)
 }
 
-func newBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
+func newsBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
 	htextCon := &linebot.TextComponent{
 		Type:   linebot.FlexComponentTypeText,
 		Text:   n.area,
@@ -65,10 +65,12 @@ func newBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
 		AspectMode:  linebot.FlexImageAspectModeTypeFit,
 		URL:         n.imagePath,
 	}
+
 	body := &linebot.BoxComponent{
 		Type:   linebot.FlexComponentTypeBox,
 		Layout: linebot.FlexBoxLayoutTypeVertical,
 	}
+
 	footer := &linebot.BoxComponent{
 		Type:   linebot.FlexComponentTypeBox,
 		Layout: linebot.FlexBoxLayoutTypeVertical,
@@ -76,6 +78,7 @@ func newBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
 			&linebot.FillerComponent{Type: linebot.FlexComponentTypeFiller},
 		},
 	}
+	
 	style := &linebot.BubbleStyle{
 		Header: &linebot.BlockStyle{BackgroundColor: black},
 		Footer: &linebot.BlockStyle{BackgroundColor: white},

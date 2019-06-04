@@ -36,12 +36,12 @@ func InitNewsScheduler(mc *MessageConfig) *NewsScheduler {
 	}
 }
 
-// AddToQueue adds a news to newsChan
+// AddToQueue adds a news to news channel.
 func (ns *NewsScheduler) AddToQueue(n *cnnNews) {
 	ns.newsChan <- n
 }
 
-// PopNewsChan call updateNews when news is in the newsChan.
+// PopNewsChan update news map from news in the news channel.
 func (ns *NewsScheduler) PopNewsChan() {
 	for n := range ns.newsChan {
 		ns.updateNewsMap(n)
@@ -59,14 +59,14 @@ func (ns *NewsScheduler) updateNewsMap(n *cnnNews) {
 	ns.newsMap[n.area] = n
 }
 
-// PopTicker call RefreshNews a period of time.
+// PopTicker timely crawl news.
 func (ns *NewsScheduler) PopTicker() {
 	for range ns.timeTicker.C {
 		ns.RefreshNews()
 	}
 }
 
-// RefreshNews crawl news from cnn
+// RefreshNews crawl news from cnn.
 func (ns *NewsScheduler) RefreshNews() {
 	c := colly.NewCollector()
 

@@ -37,7 +37,7 @@ type newsConfig struct {
 	ChanBuffer    int `json:"chan_buffer"`
 }
 
-// InitMessageConfig init the all custom message by message.json.
+// InitMessageConfig init the all custom message config by message.json.
 func InitMessageConfig() (*MessageConfig, error) {
 	messageFile, err := os.Open(string(messagePath))
 	if err != nil {
