@@ -13,7 +13,7 @@ const (
 	black          = "#000000"
 	gray           = "#AAAAAA"
 	waterBlue      = "#2C91CA"
-	lightOrange    = "#FD0000"
+	lightOrange    = "#DB9546"
 	lightRed       = "#FD0000"
 	lightGreenBlue = "#D8FFEE"
 	// Info template used
