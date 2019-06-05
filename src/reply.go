@@ -35,8 +35,8 @@ func handleTextMessage(mc *MessageConfig, text string) linebot.SendingMessage {
 	switch specialWord(strings.ToLower(text)) {
 	case handsomePhoto:
 		return randHandsomePhoto(mc)
-	case help:
-		return messageWithQuickReply(helpReply, mc)
+	case tsaitsai:
+		return messageWithQuickReply(tsaitsaiReply, mc)
 	case project:
 		return projectCarousel(mc)
 	case hello, hi:
