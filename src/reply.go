@@ -36,18 +36,24 @@ func handleTextMessage(mc *MessageConfig, text string) linebot.SendingMessage {
 	case handsomePhoto:
 		return randHandsomePhoto(mc)
 	case help:
-		return messageWithQuickReply(string(helpReply), mc)
+		return messageWithQuickReply(helpReply, mc)
 	case project:
 		return projectCarousel(mc)
 	case hello, hi:
-		pkgID := stickersPackageMap[rand.Intn(len(stickersPackageMap))]
-		stickerID := stickersMap[pkgID][rand.Intn(len(stickersMap[pkgID]))]
-		return linebot.NewStickerMessage(pkgID, stickerID)
+		return randomSticker()
 	case news:
 		return newsTemplateMessage(mc)
+	case aboutDenny:
+		return infoTemplateMessage(mc)
 	default:
-		return messageWithQuickReply(defaultReply, mc)
+		return defaultReplyMsg(mc)
 	}
+}
+
+func defaultReplyMsg(mc *MessageConfig) linebot.SendingMessage {
+	msg := mc.DefaultReply[rand.Intn(len(mc.DefaultReply))]
+
+	return messageWithQuickReply(msg, mc)
 }
 
 func randHandsomePhoto(msg *MessageConfig) linebot.SendingMessage {
@@ -55,6 +61,13 @@ func randHandsomePhoto(msg *MessageConfig) linebot.SendingMessage {
 	url := msg.HandsomePhoto[randNum]
 
 	return linebot.NewImageMessage(url, url)
+}
+
+func randomSticker() *linebot.StickerMessage {
+	pkgID := stickersPackageMap[rand.Intn(len(stickersPackageMap))]
+	stickerID := stickersMap[pkgID][rand.Intn(len(stickersMap[pkgID]))]
+
+	return linebot.NewStickerMessage(pkgID, stickerID)
 }
 
 func projectCarousel(msg *MessageConfig) linebot.SendingMessage {

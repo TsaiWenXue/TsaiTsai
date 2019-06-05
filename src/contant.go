@@ -2,24 +2,34 @@ package src
 
 type configPath string
 
-const (
-	messagePath configPath = "message.json"
+const messagePath configPath = "message.json"
 
+const (
+	// cnn news used
 	https     = "https:"
 	cnnDomain = "https://edition.cnn.com"
-
-	white = "#FFFFFF"
-	black = "#000000"
-	gray  = "#AAAAAA"
+	//color
+	white          = "#FFFFFF"
+	black          = "#000000"
+	gray           = "#AAAAAA"
+	waterBlue      = "#2C91CA"
+	lightOrange    = "#FD0000"
+	lightRed       = "#FD0000"
+	lightGreenBlue = "#D8FFEE"
+	// Info template used
+	dennyTsai      = "Denny Tsai"
+	characteristic = "Characteristic"
+	habit          = "Habit"
+	motto          = "Motto"
 )
 
 const (
-	welcome      = "Hello~ I'm TsaiTsai. Let me introduce you my best friend, Denny Tsai! Please tap the following button to see more."
-	defaultReply = "Sorry~ I can't understand what you are saying. Please type `help` for more infomation."
-	helpReply    = "`Hello` -> Say hello to me\n`HP` -> handsome photo\n`Project` -> Projects that Denny used to do"
-
+	welcome   = "Hello~ I'm TsaiTsai. Let me introduce you my best friend, Denny Tsai! Please tap the following button to see more."
+	helpReply = "TsaTsai:\n\n`Hello` -> Say hello to me\n`HP` -> Handsome photo of Denny\n`Project` -> Projects that Denny used to do\n\nYou can click `More` below to get more information about Denny!"
+	// Alternative Text
 	projectAltText = "Projects that Denny used to do"
 	newsAltText    = "Worlds news"
+	infoAltText    = "Denny Tsai info"
 )
 
 type specialWord string
@@ -31,15 +41,18 @@ const (
 	help          specialWord = "help"
 	project       specialWord = "project"
 	news          specialWord = "news"
+	aboutDenny    specialWord = "About Denny"
 )
 
 const (
+	// line sticker package id
 	brownConySally = "11537"
 	chocoFriends   = "11538"
 	univerStarBT21 = "11539"
 )
 
 var (
+	// line sticker package and sticker map
 	stickersPackageMap = []string{brownConySally, chocoFriends, univerStarBT21}
 	stickersMap        = map[string][]string{
 		brownConySally: []string{"52002734", "52002735", "52002736", "52002737", "52002738", "52002739", "52002740", "52002741", "52002742", "52002743",

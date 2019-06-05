@@ -21,7 +21,7 @@ func main() {
 	go src.Scheduler.PopNewsChan()
 	go src.Scheduler.PopTicker()
 	src.Scheduler.RefreshNews()
-
+	
 	// Init line bot
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),

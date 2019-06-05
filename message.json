@@ -1,4 +1,14 @@
 {
+  "default_reply": [
+    "Hey~ If you want to know more about me. Please type `tt` for more infomation.",
+    "HaHa! You wanna play with me?",
+    "Never say never.",
+    "Just do it!",
+    "I'm T-s-a-i T-s-a-i, TsaiTsai~~",
+    "Denny Tsai is handsome~!",
+    "It's good to meet you.",
+    "What could I do for you?"
+  ],
   "welcome": [
     {
       "image_url": "https://www.flaticon.com/premium-icon/icons/svg/748/748168.svg",
@@ -11,9 +21,9 @@
       "text": "HP"
     },
     {
-      "image_url": "https://www.flaticon.com/premium-icon/icons/svg/615/615166.svg",
-      "label": "Help",
-      "text": "help"
+      "image_url": "https://image.flaticon.com/icons/svg/1665/1665773.svg",
+      "label": "TsaiTsai",
+      "text": "tt"
     }
   ],
   "handsome_photo": [
@@ -61,5 +71,14 @@
   "news": {
     "refresh_period":5,
     "chan_buffer": 500
+  },
+  "rich_menu": {
+    "id":"richmenu-94a0c8f0ed6abc900ade27b59ccd0131"
+  },
+  "info_template": {
+    "img": "https://i.imgur.com/VHJOwUx.jpg",
+    "characteristic":"optimistic/ friendly/ rational/ pratical/ sympathetic/ supportive/ trustworthy/ adaptable/ responsible/ humorous/",
+    "habit":"sport/ movie/ animation/ game/ fiction/ music/ ",
+    "motto": "No pain no gain!"
   }
 }

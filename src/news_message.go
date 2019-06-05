@@ -17,6 +17,7 @@ func newsTemplateMessage(mc *MessageConfig) linebot.SendingMessage {
 				Text:   n.title[i],
 				Size:   linebot.FlexTextSizeTypeSm,
 				Weight: linebot.FlexTextWeightTypeBold,
+				Wrap:   true,
 				Action: &linebot.URIAction{
 					Label: n.area,
 					URI:   n.link[i],
@@ -78,7 +79,7 @@ func newsBubbleContainer(n *cnnNews) *linebot.BubbleContainer {
 			&linebot.FillerComponent{Type: linebot.FlexComponentTypeFiller},
 		},
 	}
-	
+
 	style := &linebot.BubbleStyle{
 		Header: &linebot.BlockStyle{BackgroundColor: black},
 		Footer: &linebot.BlockStyle{BackgroundColor: white},

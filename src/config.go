@@ -8,10 +8,12 @@ import (
 
 // MessageConfig is a json file that put all custom messages.
 type MessageConfig struct {
+	DefaultReply    []string                   `json:"default_reply"`
 	Welcome         []*quickReply              `json:"welcome"`
 	HandsomePhoto   []string                   `json:"handsome_photo"`
 	ProjectCarousel []*projectCarouselTemplate `json:"project_carousel"`
 	News            *newsConfig                `json:"news"`
+	InfoTemplate    *infoTemplateConfig        `json:"info_template"`
 }
 
 type quickReply struct {
@@ -35,6 +37,13 @@ type uriAction struct {
 type newsConfig struct {
 	RefreshPeriod int `json:"refresh_period"`
 	ChanBuffer    int `json:"chan_buffer"`
+}
+
+type infoTemplateConfig struct {
+	IMG            string `json:"img"`
+	Characteristic string `json:"characteristic"`
+	Habit          string `json:"habit"`
+	Motto          string `json:"motto"`
 }
 
 // InitMessageConfig init the all custom message config by message.json.
