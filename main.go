@@ -21,7 +21,7 @@ func main() {
 	go src.Scheduler.PopNewsChan()
 	go src.Scheduler.PopTicker()
 	src.Scheduler.RefreshNews()
-	
+
 	// Init line bot
 	bot, err := linebot.New(
 		os.Getenv("CHANNEL_SECRET"),
@@ -30,25 +30,17 @@ func main() {
 		log.Fatal(err)
 	}
 
+	tth := &tsaitsaiHandler{
+		bot: bot,
+		mc:  mc,
+	}
+	
 	// Setup HTTP Server for receiving requests from LINE platform
-	http.HandleFunc("/callback", func(w http.ResponseWriter, req *http.Request) {
-		events, err := bot.ParseRequest(req)
-		if err != nil {
-			if err == linebot.ErrInvalidSignature {
-				w.WriteHeader(http.StatusBadGateway)
-			} else {
-				w.WriteHeader(http.StatusInternalServerError)
-			}
-			return
-		}
-		for _, event := range events {
-			if err := src.HandleEvent(bot, event, mc); err != nil {
-				log.Println(err)
-			}
-		}
-	})
+	http.HandleFunc("/callback", tth.handleBotRequest)
+	http.HandleFunc("/web-img", tth.webImgRequest)
 
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)
 	}
 }
+
