@@ -10,5 +10,4 @@ The main purpose of TsaiTsai is to introduce [Denny Tsai(TsaiWenXue)](https://gi
 
 <a href="http://nav.cx/huFumFm"><img src="https://scdn.line-apps.com/n/line_add_friends/btn/zh-Hant.png" alt="加入好友" height="36" border="0"></a>
 
-<img src="https://qr-official.line.me/sid/M/851lcihe.png">
-
+![QR Code](https://i.imgur.com/E7UMav6.png)
