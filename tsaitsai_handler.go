@@ -40,6 +40,7 @@ func (tth *tsaitsaiHandler) webImgRequest(w http.ResponseWriter, req *http.Reque
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin": "*")
 	w.Write(js)
 }
 
