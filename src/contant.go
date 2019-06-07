@@ -25,7 +25,7 @@ const (
 
 const (
 	welcome       = "Hello~ I'm TsaiTsai. Let me introduce you my best friend, Denny Tsai! Please tap the following button to see more."
-	tsaitsaiReply = "TsaTsai:\n\n`Hello` -> Say hello to me\n`HP` -> Handsome photo of Denny\n`Project` -> Projects that Denny used to do\n\nYou can click `More` below to get more information about Denny!"
+	tsaitsaiReply = "0x0010000B TsaTsai:\n\n`Hello` -> Say hello to me\n`HP` -> Handsome photo of Denny\n`Project` -> Projects that Denny used to do\n\nYou can click `More` below to get more information about Denny!"
 	// Alternative Text
 	projectAltText = "Projects that Denny used to do"
 	newsAltText    = "Worlds news"
