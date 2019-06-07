@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
@@ -30,16 +29,4 @@ func (tth *tsaitsaiHandler) handleBotRequest(w http.ResponseWriter, req *http.Re
 			log.Println(err)
 		}
 	}
-}
-
-func (tth *tsaitsaiHandler) webImgRequest(w http.ResponseWriter, req *http.Request) {
-	js, err := json.Marshal(tth.mc.Web)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Write(js)
 }

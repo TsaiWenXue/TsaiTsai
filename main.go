@@ -37,7 +37,6 @@ func main() {
 	
 	// Setup HTTP Server for receiving requests from LINE platform
 	http.HandleFunc("/callback", tth.handleBotRequest)
-	http.HandleFunc("/web-img", tth.webImgRequest)
 
 	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err)

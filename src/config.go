@@ -14,7 +14,6 @@ type MessageConfig struct {
 	ProjectCarousel []*projectCarouselTemplate `json:"project_carousel"`
 	News            *newsConfig                `json:"news"`
 	InfoTemplate    *infoTemplateConfig        `json:"info_template"`
-	Web 			*webConfig 				   `json:"web"`
 }
 
 type quickReply struct {
@@ -45,10 +44,6 @@ type infoTemplateConfig struct {
 	Characteristic string `json:"characteristic"`
 	Habit          string `json:"habit"`
 	Motto          string `json:"motto"`
-}
-
-type webConfig struct {
-	IMG string `json:"img"`
 }
 
 // InitMessageConfig init the all custom message config by message.json.
