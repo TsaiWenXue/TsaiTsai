@@ -110,6 +110,9 @@ func (ns *NewsScheduler) newCNNNews(i int, h *colly.HTMLElement) {
 		}
 	}
 
+	if image == "" {
+		image = cnnDefaultImg
+	}
 	if len(links) == len(titles) {
 		ns.AddToQueue(&cnnNews{
 			area:      area,

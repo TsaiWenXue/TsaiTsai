@@ -6,8 +6,9 @@ const messagePath configPath = "message.json"
 
 const (
 	// cnn news used
-	https     = "https:"
-	cnnDomain = "https://edition.cnn.com"
+	https         = "https:"
+	cnnDomain     = "https://edition.cnn.com"
+	cnnDefaultImg = "https://cdn.cnn.com/cnn/.e1mo/img/4.0/placeholders/video_placeholder.jpg"
 	//color
 	white          = "#FFFFFF"
 	black          = "#000000"
