@@ -49,7 +49,7 @@ func main() {
 }
 
 func scheduleCrawl() {
-	ticker := time.NewTicker(time.Duration(25) * time.Minutes)
+	ticker := time.NewTicker(time.Duration(25) * time.Minute)
 	body := []byte(`project=default&spider=nba`)
 	for range ticker.C {
 		log.Println("start crawl")
